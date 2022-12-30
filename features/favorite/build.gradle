@@ -1,0 +1,100 @@
+apply plugin: "com.android.dynamic-feature"
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 30
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "API_KEY", movieApiKey)
+            buildConfigField("String", "HOST_BASE_URL", movieApiURL)
+            buildConfigField("String", "IMAGE_BASE_URL", movieImageUrl)
+        }
+
+        release {
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android {
+        compileOptions.incremental = false
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+apply from: "$rootDir/build-systems/muvi-unit-test-config.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation project(":app")
+    implementation project(":core-network")
+    implementation project(":common-di")
+    implementation project(":common-database")
+    implementation project(":common-widget")
+    implementation project(":base-ui")
+    implementation project(":navigation")
+    implementation project(":uttils")
+
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.design
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.support
+    implementation supportDependencies.constraintLayout
+
+    implementation libraries.kotlinCore
+    implementation libraries.dagger
+    implementation libraries.timber
+    kapt libraries.daggerCompiler
+    implementation libraries.javaxInject
+    implementation libraries.javaxAnnotation
+    implementation libraries.rx2Java
+    implementation libraries.rx2Android
+    implementation libraries.gson
+    implementation libraries.retrofit2
+    implementation libraries.retrofit2Gson
+    implementation libraries.retrofit2Rx2
+    implementation libraries.okhttp3
+    implementation libraries.glide
+    implementation libraries.lottie
+    implementation libraries.deeplinkDispatch
+    implementation libraries.roomRuntime
+    implementation libraries.shimmer
+    kapt libraries.deeplinkDispatchProcessor
+    kapt libraries.roomCompiler
+
+    testImplementation testLibraries.junit
+    testImplementation testLibraries.mockitoCore
+    testImplementation testLibraries.mockitoKotlin
+    testImplementation testLibraries.mockitoInline
+    testImplementation testSupportDependencies.core
+    testImplementation testLibraries.coreTesting
+    testImplementation testSupportDependencies.extRunner
+    testImplementation testSupportDependencies.roboelectric
+
+    androidTestImplementation testLibraries.mockitoAndroid
+    androidTestImplementation testSupportDependencies.espressoCore
+    androidTestImplementation testSupportDependencies.extRunner
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

@@ -1,0 +1,21 @@
+apply from: "$rootDir/build-systems/apps-library.gradle"
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    implementation libraries.kotlinCore
+    implementation libraries.dagger
+    implementation libraries.javaxInject
+    implementation libraries.javaxAnnotation
+    implementation libraries.rx2Java
+    implementation libraries.rx2Android
+    implementation libraries.gson
+    implementation libraries.retrofit2
+    implementation libraries.retrofit2Gson
+    implementation libraries.retrofit2Rx2
+    implementation libraries.okhttp3
+    implementation libraries.okhttp3Logging
+
+    kapt libraries.daggerCompiler
+
+}
